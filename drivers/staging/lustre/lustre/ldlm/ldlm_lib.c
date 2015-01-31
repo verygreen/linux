@@ -570,10 +570,10 @@ int client_disconnect_export(struct obd_export *exp)
 	imp = cli->cl_import;
 
 	down_write(&cli->cl_sem);
-	CDEBUG(D_INFO, "disconnect %s - %d\n", obd->obd_name,
+	CDEBUG(D_INFO, "disconnect %s - %zu\n", obd->obd_name,
 	       cli->cl_conn_count);
 
-	if (!cli->cl_conn_count) {
+	if (cli->cl_conn_count == 0) {
 		CERROR("disconnecting disconnected device (%s)\n",
 		       obd->obd_name);
 		rc = -EINVAL;
@@ -581,7 +581,7 @@ int client_disconnect_export(struct obd_export *exp)
 	}
 
 	cli->cl_conn_count--;
-	if (cli->cl_conn_count) {
+	if (cli->cl_conn_count != 0) {
 		rc = 0;
 		goto out_disconnect;
 	}
