@@ -692,34 +692,6 @@ static int proc_console_min_delay_cs(struct ctl_table *table, int write,
 	return rc;
 }
 
-static int proc_console_backoff(struct ctl_table *table, int write,
-				void __user *buffer, size_t *lenp, loff_t *ppos)
-{
-	int rc, backoff;
-	struct ctl_table dummy = *table;
-
-	dummy.data = &backoff;
-	dummy.proc_handler = &proc_dointvec;
-
-	if (!write) { /* read */
-		backoff = libcfs_console_backoff;
-		rc = proc_dointvec(&dummy, write, buffer, lenp, ppos);
-		return rc;
-	}
-
-	/* write */
-	backoff = 0;
-	rc = proc_dointvec(&dummy, write, buffer, lenp, ppos);
-	if (rc < 0)
-		return rc;
-	if (backoff <= 0)
-		return -EINVAL;
-
-	libcfs_console_backoff = backoff;
-
-	return rc;
-}
-
 static int libcfs_force_lbug(struct ctl_table *table, int write,
 			     void __user *buffer,
 			     size_t *lenp, loff_t *ppos)
@@ -828,13 +800,6 @@ static struct ctl_table lnet_table[] = {
 		.mode     = 0644,
 		.proc_handler = &proc_console_min_delay_cs
 	},
-	{
-		.procname = "console_backoff",
-		.maxlen   = sizeof(int),
-		.mode     = 0644,
-		.proc_handler = &proc_console_backoff
-	},
-
 	{
 		.procname = "cpu_partition_table",
 		.maxlen   = 128,
