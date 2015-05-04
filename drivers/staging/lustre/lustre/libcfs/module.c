@@ -817,13 +817,6 @@ static struct ctl_table lnet_table[] = {
 		.proc_handler = &proc_dobitmasks,
 	},
 	{
-		.procname = "console_ratelimit",
-		.data     = &libcfs_console_ratelimit,
-		.maxlen   = sizeof(int),
-		.mode     = 0644,
-		.proc_handler = &proc_dointvec
-	},
-	{
 		.procname = "console_max_delay_centisecs",
 		.maxlen   = sizeof(int),
 		.mode     = 0644,
@@ -840,14 +833,6 @@ static struct ctl_table lnet_table[] = {
 		.maxlen   = sizeof(int),
 		.mode     = 0644,
 		.proc_handler = &proc_console_backoff
-	},
-
-	{
-		.procname = "debug_path",
-		.data     = libcfs_debug_file_path_arr,
-		.maxlen   = sizeof(libcfs_debug_file_path_arr),
-		.mode     = 0644,
-		.proc_handler = &proc_dostring,
 	},
 
 	{
@@ -883,13 +868,6 @@ static struct ctl_table lnet_table[] = {
 		.data     = &libcfs_catastrophe,
 		.maxlen   = sizeof(int),
 		.mode     = 0444,
-		.proc_handler = &proc_dointvec,
-	},
-	{
-		.procname = "panic_on_lbug",
-		.data     = &libcfs_panic_on_lbug,
-		.maxlen   = sizeof(int),
-		.mode     = 0644,
 		.proc_handler = &proc_dointvec,
 	},
 	{
