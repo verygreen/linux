@@ -1,0 +1,3 @@
+source "fs/lustre/lnet/Kconfig"
+
+source "fs/lustre/lustre/Kconfig"
